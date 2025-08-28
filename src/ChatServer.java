@@ -4,7 +4,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -110,7 +109,6 @@ public class ChatServer {
                 return;
             }
 
-            // synchronized 블록으로 clients 맵에 대한 동시 접근을 제어합니다.
             synchronized (clients) {
                 if (clients.containsKey(potentialNickname)) {
                     sendMessage("ERR 이미 사용 중인 닉네임입니다. 연결을 종료합니다.");
@@ -127,11 +125,10 @@ public class ChatServer {
 
         private void handleCommand(String command) {
             if ("/quit".equalsIgnoreCase(command)) {
-                // /quit 명령어 처리
                 try {
-                    socket.close(); // 소켓을 닫으면 readLine()에서 예외가 발생하여 finally 블록이 실행됩니다.
+                    socket.close();
                 } catch (IOException e) {
-                    // 무시
+                    e.getMessage();
                 }
             } else if ("/who".equalsIgnoreCase(command)) {
                 // /who 명령어 처리
