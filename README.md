@@ -10,8 +10,8 @@
 ##  주요 기능
 - **다중 클라이언트 접속**: `ExecutorService`(스레드 풀)를 활용하여 안정적인 동시 접속 처리
 - **닉네임 시스템**
-    - 서버 접속 시 고유한 닉네임을 설정 (`NICK <이름>`)
-    - 중복 또는 공백이 포함된 닉네임 거절
+    - 서버 접속 시 고유한 닉네임을 설정 (`java -cp out ChatClient <서버_IP> <포트> <닉네임>`)
+    - 중복 또는 공백이 포함된 닉네임 예외처리
 - **실시간 채팅**: 메시지를 모든 클라이언트에게 브로드캐스트
 - **입장/퇴장 알림**: 사용자 입장/퇴장 시 전체 알림
 - **기본 명령어**
@@ -22,7 +22,7 @@
 ---
 
 ##  사용 기술
-- **언어**: Java (JDK 11 이상 권장)
+- **언어**: Java 17
 - **핵심 라이브러리**
     - `java.net.Socket`, `java.net.ServerSocket` : TCP/IP 기반 소켓 통신
     - `java.io.*` : 데이터 입출력 스트림
@@ -39,7 +39,7 @@
 ### 2. 컴파일
 `src` 폴더에 `ChatServer.java`, `ChatClient.java` 파일이 있다고 가정합니다.
 ```bash
-javac -d out src/ChatServer.java src/ChatClient.java
+javac -d cp src/ChatServer.java src/ChatClient.java
 ```
 
 → 컴파일된 .class 파일은 out 디렉토리에 생성됩니다.
@@ -47,16 +47,12 @@ javac -d out src/ChatServer.java src/ChatClient.java
 ### 3. 서버 실행
 ```bash
 # 기본 포트(5000)
-java -cp out ChatServer
-
-# 특정 포트(예: 5001)
-java -cp out ChatServer 5001
+java -cp out ChatServera
 ```
 
 ```bash
 실행 시:
-
-[서버] 채팅 서버를 포트 5001에서 시작합니다.
+[Server] port:5001 에서 서버 실행
 ```
 
 ### 4. 클라이언트 실행

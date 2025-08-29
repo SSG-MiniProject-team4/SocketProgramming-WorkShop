@@ -5,18 +5,24 @@ import java.nio.charset.StandardCharsets;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException{
+
+        // 클라이언트 시작 시 서버의 주소, 포트번호 & 클라이언트 닉네임 입력받음.
         if (args.length != 3) {
             System.out.println("사용법: java -cp out ChatClient <서버_IP> <포트> <닉네임>");
             return;
         }
 
+        // 서버 주소
         String host = args[0];
+        // 서버 포트번호
         int port = Integer.parseInt(args[1]);
+        // 닉네임
         String nickname = args[2];
 
         try (Socket socket = new Socket(host, port)) {
             System.out.println("채팅 서버에 연결되었습니다 (" + host + ":" + port + ")");
 
+            // 다른 클라이언트
             PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
             Thread readerThread = new Thread(new ServerMessageReader(socket));
@@ -28,12 +34,14 @@ public class ChatClient {
             String userInput;
             while ((userInput = consoleReader.readLine()) != null) {
                 out.println(userInput);
+                // 클라 종료 조건
                 if ("/quit".equalsIgnoreCase(userInput.trim())) {
                     break;
                 }
             }
             readerThread.join();
 
+        // 클라 에러처리
         } catch (UnknownHostException e) {
             System.err.println("호스트 " + host + "를 찾을 수 없습니다.");
         } catch (IOException e) {
@@ -57,6 +65,7 @@ public class ChatClient {
         @Override
         public void run() {
             try {
+                // 나의 채팅
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                 String serverMessage;
                 while ((serverMessage = in.readLine()) != null) {

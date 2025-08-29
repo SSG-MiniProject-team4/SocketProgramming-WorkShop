@@ -9,15 +9,17 @@ import java.util.concurrent.Executors;
 
 
 public class ChatServer {
+    // 기본 포트번호
     private static final int PORT = 5001;
 
+    // Client 동시성 처리
     private static final ExecutorService pool = Executors.newCachedThreadPool();
-
     private static final Map<String, CLientHandler> clients = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
         System.out.println("[Server] port:" + PORT + " 에서 서버 실행");
 
+        // 서버 종료 조건 : ctl+c
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("\n[서버] 종료를 시작합니다...");
             broadcast("SYSTEM: 서버가 곧 종료됩니다.");
@@ -30,10 +32,13 @@ public class ChatServer {
             System.out.println("[서버] 서버 강제 종료.");
         }));
 
+
+        // server 무한 실행
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket socket = serverSocket.accept();
+                    // 클라이언트 접속
                     pool.submit(new CLientHandler(socket));
                 } catch (IOException e) {
                     System.out.println("[Server] client연결 오류" + e.getMessage());
@@ -48,6 +53,7 @@ public class ChatServer {
 
     }
 
+    // 다른 클라이언트 메세지 모든 클리이언트에게 브로드캐스팅
     private static void broadcast(String message) {
         for(CLientHandler client : clients.values()){
             client.sendMessage(message);
@@ -55,6 +61,7 @@ public class ChatServer {
         System.out.println("[전체 메세지]" + message);
     }
 
+    // 소켓으로 클라이언트 관리
     private static class CLientHandler implements Runnable {
         private final Socket socket;
         private PrintWriter out;
@@ -87,12 +94,15 @@ public class ChatServer {
             } catch(IOException e){
                 System.out.println(e.getMessage());
             } finally {
+
+                // 클라이언트 연결 종료
                 cleanup();
             }
         }
 
+        // 닉네임 입력 예외처리 / 중복, 공백 검사
         private void setupNickname() throws IOException{
-            sendMessage("NICK <이름> ");
+            //sendMessage("NICK <이름> ");
             String nickCommand = in.readLine();
 
             if (nickCommand == null || !nickCommand.toUpperCase().startsWith("NICK ")) {
@@ -121,6 +131,7 @@ public class ChatServer {
 
         }
 
+        // 클라이언트 종료 조건
         private void handleCommand(String command) {
             if ("/quit".equalsIgnoreCase(command)) {
                 try {
@@ -137,12 +148,14 @@ public class ChatServer {
             }
         }
 
+        // 메세지 전송
         public void sendMessage(String message) {
             if (out != null) {
                 out.println(message);
             }
         }
 
+        // 클라이언트
         private void cleanup() {
             if (nickname != null) {
                 clients.remove(nickname);
@@ -152,7 +165,7 @@ public class ChatServer {
             try {
                 socket.close();
             } catch (IOException e) {
-                // 무시
+                e.printStackTrace();
             }
         }
 
