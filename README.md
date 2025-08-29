@@ -113,9 +113,22 @@ Bob님이 채팅에 참여했습니다.
 SYSTEM: 서버가 곧 종료됩니다.
 [클라이언트] 서버와의 연결이 끊어졌습니다. (Disconnected)
 ```
+## 시연
 
-<img width="1785" height="729" alt="Image" src="https://github.com/user-attachments/assets/2fe5c110-bc32-42ae-9309-321f939699be" />
-<img width="1789" height="655" alt="Image" src="https://github.com/user-attachments/assets/5db8d11a-576f-42cf-9335-9eb0236f7fb7" />
-<img width="1786" height="616" alt="Image" src="https://github.com/user-attachments/assets/57fa004e-8195-4818-a0cf-1b08776a7645" />
-<img width="1787" height="593" alt="Image" src="https://github.com/user-attachments/assets/0759abfa-2382-4bfa-97b0-a25eeb546733" />
+### 1. 서버 실행 후 Yumi / Bob 서버 접속
 <img width="1790" height="556" alt="Image" src="https://github.com/user-attachments/assets/f1c1486e-e9a8-49c6-8a7a-d428197906eb" />
+
+### 2. Yumi / Bob 서로 메세지 브로드캐스팅 된 모습
+<img width="1787" height="593" alt="Image" src="https://github.com/user-attachments/assets/0759abfa-2382-4bfa-97b0-a25eeb546733" />
+
+### 3. 같은 닉네임 동시성 검사
+<img width="1785" height="729" alt="Image" src="https://github.com/user-attachments/assets/2fe5c110-bc32-42ae-9309-321f939699be" />
+
+### 4. Bob 클라이언트의 서버 연결 종료
+<img width="1786" height="616" alt="Image" src="https://github.com/user-attachments/assets/57fa004e-8195-4818-a0cf-1b08776a7645" />
+
+### 5. ctrl + c 로 서버 강제 종료
+<img width="1789" height="655" alt="Image" src="https://github.com/user-attachments/assets/5db8d11a-576f-42cf-9335-9eb0236f7fb7" />
+
+
+
