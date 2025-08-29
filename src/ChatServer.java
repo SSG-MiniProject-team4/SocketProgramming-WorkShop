@@ -59,7 +59,6 @@ public class ChatServer {
 
                 synchronized (clients) {// 한번에 한 client만 clients에 접근하도록하여 nickname 넣기
                     if(!checkNickname(nickname)){
-                        nickName = nickname;
                         out.println("ERR: You are not allowed(nickname is already existed or forbidden)");
                         out.flush();
                         socket.close();
@@ -117,7 +116,7 @@ public class ChatServer {
                 terminate();
             }finally{ //quit 입력시 -> 정상종료 | 비정상 종료는 terminate()를 main에서 호출하게끔 되어있음
                 try {socket.close();} catch(IOException e){ System.err.println(e.getMessage());}
-                if(flag){ //닉네임이 정상적일 때만
+                if(flag && nickName != null){ //닉네임이 정상적일 때만
                     clients.remove(nickName);
                     System.out.println(nickName + " left");
                 }
