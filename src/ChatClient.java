@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 public class ChatClient {
     public static void main(String[] args) throws IOException{
         if (args.length != 3) {
-            System.out.println("사용법: java ChatClient <서버_IP> <포트> <닉네임>");
+            System.out.println("사용법: java -cp out ChatClient <서버_IP> <포트> <닉네임>");
             return;
         }
 

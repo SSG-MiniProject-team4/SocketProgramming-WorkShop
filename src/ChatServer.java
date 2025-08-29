@@ -9,19 +9,17 @@ import java.util.concurrent.Executors;
 
 
 public class ChatServer {
-    private static final int PORT = 5000;
+    private static final int PORT = 5001;
 
     private static final ExecutorService pool = Executors.newCachedThreadPool();
 
     private static final Map<String, CLientHandler> clients = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
-        int port = PORT;
-
         System.out.println("[Server] port:" + PORT + " 에서 서버 실행");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("\n[서버] 종료 절차를 시작합니다...");
+            System.out.println("\n[서버] 종료를 시작합니다...");
             broadcast("SYSTEM: 서버가 곧 종료됩니다.");
             try {
                 Thread.sleep(500);
@@ -32,7 +30,7 @@ public class ChatServer {
             System.out.println("[서버] 서버 강제 종료.");
         }));
 
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket socket = serverSocket.accept();
@@ -43,7 +41,7 @@ public class ChatServer {
                 }
             }
         } catch (IOException e) {
-            System.out.println("[Server] 포트" + port + " not listen");
+            System.out.println("[Server] 포트" + PORT + " not listen");
         } finally {
             pool.shutdown();
         }
